@@ -5,5 +5,7 @@ export const BOOKS_ROUTES: Routes = [
   {
     path: '',
     component: BooksComponent,
+    children:[
+    ]
   },
 ];

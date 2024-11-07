@@ -9,52 +9,18 @@ import {
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { first, map } from 'rxjs';
+import { BookCenturiesComponent } from "./components/book-centuries.component";
+import { BookListComponent } from "./components/book-list.component";
 
 @Component({
   selector: 'app-books',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterOutlet, JsonPipe],
+  imports: [RouterOutlet, JsonPipe, BookCenturiesComponent, BookListComponent],
   template: `
     <div class="overflow-x-auto">
-      <table>
-        <thead>
-          <tr>
-            <th>Century</th>
-            <th>Number of Books</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (bookBucket of bookBuckets(); track bookBucket.century) {
-            <tr>
-              <th>{{bookBucket.century}}</th>
-              <th>{{bookBucket.count}}</th>
-            </tr>
-          }
-        </tbody>
-        <table class="table">
-          <!-- head -->
-          <thead>
-            <tr>
-              <th></th>
-              <th>id</th>
-              <th>title</th>
-              <th>author</th>
-              <th>year</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (book of books(); track book.id) {
-              <tr>
-                <td>{{ book.id }}</td>
-                <td>{{ book.title }}</td>
-                <td>{{ book.author }}</td>
-                <td>{{ book.year }}</td>
-              </tr>
-            }
-          </tbody>
-        </table>
-      </table>
+        <app-book-centuries [BookBuckets]=bookBuckets()/>
+        <app-book-list [Books]=books()! />
     </div>
   `,
   styles: ``,
@@ -68,6 +34,7 @@ export class BooksComponent {
       }>('/api/books')
       .pipe(map((res) => res.data)),
   );
+  
 
   bookBuckets = computed(() => {
     // lazy typescript type coalescing
@@ -79,19 +46,19 @@ export class BooksComponent {
     for (let i = +earliest/100; i <= latestYear/100; i++) {
       result.push({ century: ~~i + '00', count: 0 });
     }
-    console.log(result);
+    //console.log(result);
 
     this.books()?.forEach((book) => {
       // lazy typescript type coalescing
       const bucket = ~~(book.year/100) + '00';
-      console.log(bucket);
+      //console.log(bucket);
       result.find(bookBucket => bookBucket.century == bucket)!.count++;
     });
     return result;
   });
 }
 
-type BookBucketItem = {
+export type BookBucketItem = {
   century: string;
   count: number;
 };
