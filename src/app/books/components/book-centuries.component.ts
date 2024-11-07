@@ -1,5 +1,4 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
-import { BookBucketItem } from '../books.component';
 
 @Component({
   selector: 'app-book-centuries',
@@ -29,3 +28,9 @@ import { BookBucketItem } from '../books.component';
 export class BookCenturiesComponent {
     @Input() BookBuckets: BookBucketItem[] = [];
 }
+
+// code deuplcate against store fix later
+type BookBucketItem = {
+    century: string;
+    count: number;
+  };

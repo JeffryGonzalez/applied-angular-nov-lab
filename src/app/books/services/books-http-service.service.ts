@@ -12,8 +12,15 @@ export class BooksHttpService {
   getBooks() {
     return this._http
       .get<{
-        data: { id: string; title: string; author: string; year: number }[];
+        data: BookData[];
       }>('/api/books')
       .pipe(map((res) => res.data));
   }
 }
+
+export type BookData = {
+  id: string;
+  title: string;
+  author: string;
+  year: number;
+};
