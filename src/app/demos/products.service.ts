@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Product } from './products.store';
 import { map } from 'rxjs';
+
+import { ProductSchema, Product } from './types';
 
 @Injectable()
 export class ProductsService {

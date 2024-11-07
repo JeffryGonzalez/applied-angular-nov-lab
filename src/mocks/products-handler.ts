@@ -6,7 +6,7 @@ const handlers = [
     return HttpResponse.json({
       id,
       description: 'Beer',
-      price: '7.89',
+      price: 7.89,
       cost: 2.98,
       reviews: ['Best Beer Ever - George', 'Good with Tacos - Jeff'],
     });

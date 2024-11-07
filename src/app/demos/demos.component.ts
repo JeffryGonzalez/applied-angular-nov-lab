@@ -26,7 +26,7 @@ import { ProductsStore } from './products.store';
 })
 export class DemosComponent implements OnInit {
   store = inject(ProductsStore);
-  id = input.required<string>();
+  id = input.required<string>(); // this should be the thing after the final slash when you go to /demo/398398
 
   ngOnInit(): void {
     this.store.getProduct(this.id());
