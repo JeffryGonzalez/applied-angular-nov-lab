@@ -1,5 +1,4 @@
 import { JsonPipe } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 import {
   Component,
   ChangeDetectionStrategy,
@@ -7,10 +6,11 @@ import {
   computed,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { RouterLink, RouterOutlet } from '@angular/router';
-import { first, map } from 'rxjs';
+import {  RouterOutlet } from '@angular/router';
+import { map } from 'rxjs';
 import { BookCenturiesComponent } from "./components/book-centuries.component";
 import { BookListComponent } from "./components/book-list.component";
+import { BooksHttpService } from './services/books-http-service.service';
 
 @Component({
   selector: 'app-books',
@@ -26,16 +26,9 @@ import { BookListComponent } from "./components/book-list.component";
   styles: ``,
 })
 export class BooksComponent {
-  _http = inject(HttpClient);
-  books = toSignal(
-    this._http
-      .get<{
-        data: { id: string; title: string; author: string; year: number }[];
-      }>('/api/books')
-      .pipe(map((res) => res.data)),
-  );
+  _booksHttpService = inject(BooksHttpService);
+  books = toSignal(this._booksHttpService.getBooks());
   
-
   bookBuckets = computed(() => {
     // lazy typescript type coalescing
 

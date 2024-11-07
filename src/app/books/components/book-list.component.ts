@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, input, Input, Signal } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 
 @Component({
     selector: 'app-book-list',
