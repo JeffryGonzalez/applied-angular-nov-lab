@@ -16,6 +16,11 @@ type Book = {
   author: string;
   year: number;
 };
+
+type CenturyItem = {
+  centuryText: string;
+  century: number;
+};
 @Component({
   selector: 'app-books',
   standalone: true,
@@ -46,26 +51,7 @@ type Book = {
         </tbody>
       </table>
     </div>
-
-    <table class="table table-zebra">
-      <!-- head -->
-      <thead>
-        <tr>
-          <th>Century</th>
-          <th>Number of Books</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- row 1 -->
-        @for (book of booksByCentury(); track book[0]) {
-          <tr>
-            <td>{{ book[0] }}</td>
-            <td>{{ book[1] }}</td>
-          </tr>
-        }
-        <!-- row 2 -->
-      </tbody>
-    </table> `,
+    <pre> {{ booksByCentury() | json }}</pre> `,
 
   styles: ``,
 })
@@ -80,26 +66,34 @@ export class BooksComponent {
       .pipe(map((m) => m.data)),
   );
 
+  // a computed value that breaks down the number of books by century
   booksByCentury = computed(() => {
-    const result = new Map<string, number>([]);
+    const books = this.books() || [];
+    const centuryMap = new Map<string, number>();
 
-    this.books()?.forEach((b) => {
-      const c = getCenturyFrom(b.year);
-      console.log(c);
-      if (result.has(c)) {
-        const count = result.get(c);
-        result.set(c, count! + 1);
-      } else {
-        result.set(c, 1);
-      }
+    books.forEach((book) => {
+      const century = getCenturyFrom(book.year);
+      centuryMap.set(century, (centuryMap.get(century) || 0) + 1);
     });
-    return Array.from(result.entries()).sort((a, b) =>
-      a[0].localeCompare(b[0]),
-    );
+
+    const all = Array.from(centuryMap.entries()).map(([century, count]) => ({
+      century,
+      count,
+    }));
+    return all.sort((a, b) => {
+      const getCenturyValue = (century: string): number => {
+        const [value, era] = century.split(' ');
+        const numValue = parseInt(value, 10);
+        return era === 'BC' ? -numValue : numValue;
+      };
+      return getCenturyValue(a.century) - getCenturyValue(b.century);
+      // sort this array by century
+    });
   });
 }
 
 // a function that returns the century from the year
+
 function getCenturyFrom(year: number): string {
   if (year < 0) {
     return `${Math.ceil(Math.abs(year) / 100)} BC`;
