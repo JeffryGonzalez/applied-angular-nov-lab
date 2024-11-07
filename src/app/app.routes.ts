@@ -27,4 +27,10 @@ export const routes: Routes = [
     loadChildren: () =>
       import('./counter/counter.routes').then((r) => r.COUNTER_ROUTES),
   },
+  {
+    path: 'books',
+    canMatch: [canMatchFeature('books')],
+    loadChildren: () =>
+      import('./books/books.routs').then((b) => b.BOOKS_ROUTES),
+  },
 ];
