@@ -54,6 +54,10 @@ books = toSignal(
 );
 ```
 
+You will notice that while our type seems to specify only certain data (id, title, author, etc.) all of the data is displayed.
+
+In TypeScript, the types are for "us" and don't have anything to do with "reality" in the browser. They are just a way for the compiler to do some "checking" for us as we code, and give us some code completion.
+
 Convert the `<pre>` element to an unordered list, and for each of the books in the books signal, display a list item element with the raw jason for the book.
 
 ```typescript
@@ -65,10 +69,6 @@ Convert the `<pre>` element to an unordered list, and for each of the books in t
       }
     </ul>
 ```
-
-You will notice that while our type seems to specify only certain data (id, title, author, etc.) all of the data is displayed.
-
-In TypeScript, the types are for "us" and don't have anything to do with "reality" in the browser. They are just a way for the compiler to do some "checking" for us as we code, and give us some code completion.
 
 Now, let's convert the raw data displayed into an HTML table that displays the id, title, author, and year.
 
