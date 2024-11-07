@@ -6,7 +6,7 @@ We want to create a componet that lists out the data from the results of the HTT
 
 ## Steps
 
-### 1. Create a Feature 
+### 1. Create a Feature
 
 In `/src/app` create a feature folder called `books` with a `books.component.ts` and a `books.routes.ts`
 
@@ -14,8 +14,7 @@ Create the component and create the routes as in the Counter lab.
 
 Add a link to the nav bar for the books.
 
-*extra credit - hide the link and protect the route using a feature flag called `books`*
-
+_extra credit - hide the link and protect the route using a feature flag called `books`_
 
 ### 2. "ProtoType" - Getting the data
 
@@ -26,7 +25,7 @@ Create a field in the component class to hold the books returned from the `HttpC
 
 We want to have this be a signal, but the `HttpClient`'s methods return Observables.
 
-The `@ngular/core/rxjs-interop` package has a method called `toSignal` that can convert an observable into a signal. Natanel Basal, of NgNeat Fame, has a good [Medium](https://netbasal.com/converting-observables-to-signals-in-angular-what-you-need-to-know-4f5474c765a0) that goes into some details.
+The `@angular/core/rxjs-interop` package has a method called `toSignal` that can convert an observable into a signal. Natanel Basal, of NgNeat Fame, has a good [Medium](https://netbasal.com/converting-observables-to-signals-in-angular-what-you-need-to-know-4f5474c765a0) that goes into some details.
 
 The body of your component class might look something like this:
 
@@ -51,7 +50,7 @@ books = toSignal(
     .get<{
       data: { id: string; title: string; author: string; year: number }[];
     }>("/api/books")
-    .pipe(map((res) => res.data))
+    .pipe(map((res) => res.data)),
 );
 ```
 
@@ -118,8 +117,6 @@ Create a `BooksStore` (like our BankStore or or the CounterStore stores) that wi
 Hints:
 
 You will probably with to use `withEntities`, look at the BankStore store for inspiration.
-
-
 
 ### 5.1 State Management - Pagination
 
