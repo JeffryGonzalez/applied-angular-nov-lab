@@ -9,9 +9,14 @@ import { BooksStore } from './services/books.store';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [BooksTableComponent, BooksByCenturyComponent],
   template: `
-    <app-books-table [books]="store.currentPage()" />
-
-    <app-books-by-century [books]="store.entities()" />
+    <div class="flex gap-8">
+      <div class="col-span-1">
+        <app-books-table [books]="store.currentPage()" />
+      </div>
+      <div class="col-span-1">
+        <app-books-by-century [books]="store.entities()" />
+      </div>
+    </div>
   `,
 
   styles: ``,
