@@ -1,35 +1,34 @@
 import { AsyncPipe, JsonPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
+  OnInit,
+} from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { BankingService } from '../banking/services/banking.service';
+import { ProductsStore } from './products.store';
 
 @Component({
   selector: 'app-blah',
   standalone: true,
+
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterOutlet, RouterLink, AsyncPipe, JsonPipe],
-  providers: [BankingService],
+
   template: `
     <p>Demos Go Here</p>
     <div>
-      <a class="link link-primary" routerLink="change-detection"
-        >Change Detection</a
-      >
+      <pre>{{ store.product() | json }}</pre>
     </div>
-    <div>
-      <router-outlet />
-    </div>
-
-    <pre>
-            {{ req | async | json }}
-
-        </pre
-    >
   `,
   styles: ``,
 })
-export class DemosComponent {
-  http = inject(BankingService);
+export class DemosComponent implements OnInit {
+  store = inject(ProductsStore);
+  id = input.required<string>();
 
-  req = this.http.loadCurrentStatement();
+  ngOnInit(): void {
+    this.store.getProduct(this.id());
+  }
 }
