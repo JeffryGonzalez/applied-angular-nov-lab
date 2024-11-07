@@ -11,22 +11,31 @@ import { map } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterOutlet, JsonPipe],
   template: `
-    <div class="flex gap-4 p-4">
-      <!-- <div>books page</div> -->
-      <!-- <br> -->
-      <!-- <pre>
-        {{ books() | json }}
-</pre> -->
+    <div class="overflow-x-auto">
+  <table class="table">
+    <!-- head -->
+    <thead>
+      <tr>
+        <th></th>
+        <th>id</th>
+        <th>title</th>
+        <th>author</th>
+        <th>year</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for(book of books(); track book.id){
+        <tr>
+        <td>{{book.id}}</td>
+        <td>{{book.title}}</td>
+        <td>{{book.author}}</td>
+        <td>{{book.year}}</td>
+      </tr>
       
-    <ul>
-      @for(book of books(); track book.id) {
-      <li>
-        <pre>{{ book | json }}</pre>
-      </li>
       }
-    </ul>
-    </div>
-    <router-outlet />
+    </tbody>
+  </table>
+</div>
   `,
   styles: ``,
 })
