@@ -29,7 +29,7 @@ import { BooksListStore } from './services/book-store';
   template: `
     <div class="overflow-x-auto">
       <a routerLink="bookslist" class="btn btn-primary">books list with pagination</a>
-      <a routerLink="bookscenturies" class="btn btn-primary">century list</a>
+      <a routerLink="bookscentury" class="btn btn-primary">century list</a>
       <br>
       <router-outlet />
       <!-- <app-book-centuries [BookBuckets]="bookBuckets()" />
