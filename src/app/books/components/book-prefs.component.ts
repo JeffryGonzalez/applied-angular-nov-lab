@@ -2,11 +2,15 @@ import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { BooksListStore } from '../services/book-store';
 
 @Component({
-  selector: 'app-prefs',
-  standalone: true,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [],
-  template: `
+    selector: 'app-book-prefs',
+    standalone: true,
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [],
+    template: `
+        <p>
+      pick a default book list page limit, the current limit is
+      {{ store.booksPerPage() }}
+    </p>
     <div class="join">
       <button
         (click)="store.setBooksPerPage(5)"
@@ -31,9 +35,9 @@ import { BooksListStore } from '../services/book-store';
       </button>
       <!--  TODO: all-->
     </div>
-  `,
-  styles: ``,
+    `,
+    styles: ``
 })
-export class BooksDisplayDefaultComponent {
-  store = inject(BooksListStore);
+export class BookPrefsComponent {
+    store = inject(BooksListStore);
 }

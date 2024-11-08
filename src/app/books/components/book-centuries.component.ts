@@ -1,4 +1,5 @@
-import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, inject } from '@angular/core';
+import { BooksListStore } from '../services/book-store';
 
 @Component({
   selector: 'app-book-centuries',
@@ -14,7 +15,7 @@ import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
         </tr>
       </thead>
       <tbody>
-        @for (bookBucket of BookBuckets; track bookBucket.century) {
+        @for (bookBucket of bookBuckets(); track bookBucket.century) {
           <tr>
             <th>{{ bookBucket.century }}</th>
             <th>{{ bookBucket.count }}</th>
@@ -26,11 +27,6 @@ import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
   styles: ``,
 })
 export class BookCenturiesComponent {
-    @Input() BookBuckets: BookBucketItem[] = [];
+  _booksService = inject(BooksListStore);
+  bookBuckets = this._booksService.getBookBuckets;
 }
-
-// code deuplcate against store fix later
-type BookBucketItem = {
-    century: string;
-    count: number;
-  };

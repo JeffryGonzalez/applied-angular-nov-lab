@@ -1,4 +1,5 @@
-import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, inject } from '@angular/core';
+import { BooksListStore } from '../services/book-store';
 
 @Component({
     selector: 'app-book-list',
@@ -18,7 +19,7 @@ import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
             </tr>
           </thead>
           <tbody>
-            @for (book of Books; track book.id) {
+            @for (book of Books(); track book.id) {
               <tr>
                 <td>{{ book.id }}</td>
                 <td>{{ book.title }}</td>
@@ -32,5 +33,6 @@ import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
     styles: ``
 })
 export class BookListComponent {
-    @Input() Books: { id: string; title: string; author: string; year: number }[] = [];
+  _booksService = inject(BooksListStore);
+  Books = this._booksService.getBooksRespectingPrefs;
 }

@@ -6,12 +6,12 @@ import {
   computed,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { RouterOutlet } from '@angular/router';
+import { RouterLink, RouterOutlet } from '@angular/router';
 import { map } from 'rxjs';
 import { BookCenturiesComponent } from './components/book-centuries.component';
 import { BookListComponent } from './components/book-list.component';
 import { BooksHttpService } from './services/books-http-service.service';
-import { BooksDisplayDefaultComponent } from './pages/books-display-default-component';
+import { BooksDisplayComponent } from './pages/books-display-component';
 import { BooksListStore } from './services/book-store';
 
 @Component({
@@ -23,13 +23,17 @@ import { BooksListStore } from './services/book-store';
     JsonPipe,
     BookCenturiesComponent,
     BookListComponent,
-    BooksDisplayDefaultComponent,
+    BooksDisplayComponent,
+    RouterLink,
   ],
   template: `
     <div class="overflow-x-auto">
-      <app-prefs />
-      <app-book-centuries [BookBuckets]="bookBuckets()" />
-      <app-book-list [Books]="books()!" />
+      <a routerLink="bookslist" class="btn btn-primary">books list with pagination</a>
+      <a routerLink="bookscenturies" class="btn btn-primary">century list</a>
+      <br>
+      <router-outlet />
+      <!-- <app-book-centuries [BookBuckets]="bookBuckets()" />
+      <app-book-list [Books]="books()!" /> -->
     </div>
   `,
   styles: ``,
@@ -37,6 +41,5 @@ import { BooksListStore } from './services/book-store';
 export class BooksComponent {
   _booksService = inject(BooksListStore);
   books = this._booksService.getBooksRespectingPrefs;
-
   bookBuckets = this._booksService.getBookBuckets;
 }
