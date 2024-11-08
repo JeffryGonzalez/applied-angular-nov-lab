@@ -36,7 +36,7 @@ import { BooksListStore } from '../services/book-store';
       </tbody>
     </table>
     <div class="join">
-      @for(i of this._booksService.getMaxPages(); track i){
+      @for(i of this._booksService.getMaxPagesFiltered(); track i){
         <button class="join-item btn" (click)="this._booksService.setCurrentPage(i)" [disabled]="this._booksService.currentPage() === i">{{i}}</button>
       }
     </div>
@@ -45,5 +45,5 @@ import { BooksListStore } from '../services/book-store';
 })
 export class BookListComponent {
   _booksService = inject(BooksListStore);
-  books = this._booksService.getBooksFromPage;
+  books = this._booksService.getFilteredBooksFromPage;
 }

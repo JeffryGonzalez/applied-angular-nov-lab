@@ -13,12 +13,18 @@ type BookListState = {
   booksPerPage: number;
   currentPage: number;
   books: BookData[];
+  filteredBooks: BookData[];
+  authorFilter: string;
+  titleFilter: string;
 };
 
 const initialState: BookListState = {
   booksPerPage: 50,
   currentPage: 1,
   books: [],
+  filteredBooks: [],
+  authorFilter: '',
+  titleFilter: '',
 };
 
 type BookBucketItem = {
@@ -31,27 +37,62 @@ export const BooksListStore = signalStore(
   withMethods((store) => {
     return {
       setBooksPerPage: (amount: number) =>
-        patchState(store, { booksPerPage: amount , currentPage: 1}),
+        patchState(store, { booksPerPage: amount, currentPage: 1 }),
       setCurrentPage: (amount: number) =>
         patchState(store, { currentPage: amount }),
+      setAuthorFilter: (author: string) => {
+        patchState(store, { authorFilter: author });
+        patchState(store, {
+          filteredBooks: filterBooks(
+            store.books(),
+            store.authorFilter(),
+            store.titleFilter(),
+          ),
+        });
+      },
+      setTitleFilter: (title: string) => {
+        patchState(store, { titleFilter: title });
+        patchState(store, {
+          filteredBooks: filterBooks(
+            store.books(),
+            store.authorFilter(),
+            store.titleFilter(),
+          ),
+        });
+      },
     };
   }),
   withComputed((store) => ({
     // these should probably be methods not computed
-    getBooks: computed(() => 
-      store.books()
-    ),
+    getBooks: computed(() => store.books()),
     getBooksRespectingPrefs: computed(() =>
-      store.books().slice(0,store.booksPerPage()),
+      store.books().slice(0, store.booksPerPage()),
     ),
-    getBooksFromPage: computed(() =>{
-      const start = (store.currentPage()-1)*store.booksPerPage();
+    getBooksFromPage: computed(() => {
+      const start = (store.currentPage() - 1) * store.booksPerPage();
       const end = start + store.booksPerPage();
       return store.books().slice(start, end);
     }),
+    getFilteredBooksFromPage: computed(() => {
+      const start = (store.currentPage() - 1) * store.booksPerPage();
+      const end = start + store.booksPerPage();
+      return store.filteredBooks().slice(start, end);
+    }),
     getMaxPages: computed(() => {
       // if 4 pages, return [1,2,3,4] this function is badly named
-      return [...Array(Math.ceil(store.books().length / store.booksPerPage())+1).keys()].slice(1);
+      return [
+        ...Array(
+          Math.ceil(store.books().length / store.booksPerPage()) + 1,
+        ).keys(),
+      ].slice(1);
+    }),
+    getMaxPagesFiltered: computed(() => {
+      // if 4 pages, return [1,2,3,4] this function is badly named
+      return [
+        ...Array(
+          Math.ceil(store.filteredBooks().length / store.booksPerPage()) + 1,
+        ).keys(),
+      ].slice(1);
     }),
     getBookBuckets: computed(() => {
       // lazy typescript type coalescing
@@ -90,9 +131,30 @@ export const BooksListStore = signalStore(
 
       // bad
       service.getBooks().subscribe((b) => {
-        patchState(store, { books: b });
-        console.log('ran a thing');
+        patchState(store, { books: b, filteredBooks: b });
+        console.log('loaded',store.books(), store.filteredBooks());
       });
     },
   }),
 );
+
+function filterBooks(
+  bda: BookData[],
+  authorFilter: string,
+  titleFilter: string,
+) {
+  let resultSet = bda;
+  console.log(resultSet);
+  if (authorFilter) {
+    resultSet = resultSet.filter((bls) => bls.author.toLowerCase().indexOf(authorFilter) >= 0);
+    console.log("ran author filter on " + authorFilter);
+    console.log(resultSet);
+
+  }
+  if (titleFilter) {
+    resultSet = resultSet.filter((bls) => bls.title.toLowerCase().indexOf(titleFilter) >= 0);
+    console.log("ran title filter on " + titleFilter);
+    console.log(resultSet);
+  }
+  return resultSet;
+}
