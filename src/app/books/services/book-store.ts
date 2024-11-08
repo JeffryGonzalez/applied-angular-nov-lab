@@ -17,7 +17,7 @@ type BookListState = {
 
 const initialState: BookListState = {
   booksPerPage: 50,
-  currentPage: 0,
+  currentPage: 1,
   books: [],
 };
 
@@ -31,15 +31,28 @@ export const BooksListStore = signalStore(
   withMethods((store) => {
     return {
       setBooksPerPage: (amount: number) =>
-        patchState(store, { booksPerPage: amount }),
+        patchState(store, { booksPerPage: amount , currentPage: 1}),
       setCurrentPage: (amount: number) =>
         patchState(store, { currentPage: amount }),
     };
   }),
   withComputed((store) => ({
+    // these should probably be methods not computed
+    getBooks: computed(() => 
+      store.books()
+    ),
     getBooksRespectingPrefs: computed(() =>
       store.books().slice(0,store.booksPerPage()),
     ),
+    getBooksFromPage: computed(() =>{
+      const start = (store.currentPage()-1)*store.booksPerPage();
+      const end = start + store.booksPerPage();
+      return store.books().slice(start, end);
+    }),
+    getMaxPages: computed(() => {
+      // if 4 pages, return [1,2,3,4] this function is badly named
+      return [...Array(Math.ceil(store.books().length / store.booksPerPage())+1).keys()].slice(1);
+    }),
     getBookBuckets: computed(() => {
       // lazy typescript type coalescing
 
