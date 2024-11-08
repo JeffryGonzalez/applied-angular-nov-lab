@@ -127,12 +127,12 @@ export const BooksListStore = signalStore(
   withHooks({
     onInit(store) {
       const service = inject(BooksHttpService);
-      console.log('init ran');
+      //console.log('init ran');
 
       // bad
       service.getBooks().subscribe((b) => {
         patchState(store, { books: b, filteredBooks: b });
-        console.log('loaded',store.books(), store.filteredBooks());
+        //console.log('loaded',store.books(), store.filteredBooks());
       });
     },
   }),
@@ -144,17 +144,17 @@ function filterBooks(
   titleFilter: string,
 ) {
   let resultSet = bda;
-  console.log(resultSet);
+  //console.log(resultSet);
   if (authorFilter) {
     resultSet = resultSet.filter((bls) => bls.author.toLowerCase().indexOf(authorFilter) >= 0);
-    console.log("ran author filter on " + authorFilter);
-    console.log(resultSet);
+    //console.log("ran author filter on " + authorFilter);
+    //console.log(resultSet);
 
   }
   if (titleFilter) {
     resultSet = resultSet.filter((bls) => bls.title.toLowerCase().indexOf(titleFilter) >= 0);
-    console.log("ran title filter on " + titleFilter);
-    console.log(resultSet);
+    //console.log("ran title filter on " + titleFilter);
+    //console.log(resultSet);
   }
   return resultSet;
 }
