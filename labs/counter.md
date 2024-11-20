@@ -11,7 +11,7 @@ Create an Angular component in that folder called `counter.component.ts`.
 In the template for this component, create a div that looks like this:
 
 ```html
-<div data-testid="counter-feature">Counter Stuff Goes Here</div>
+<p>Counter Stuff Goes Here</p>
 ```
 
 All of the content you create for this feature should be inside this div.
@@ -37,16 +37,6 @@ The URL should change to `http://localhost:4200/counter`.
 
 You should see `Counter Stuff Here` on the page.
 
-Click the test runner extension icon in Visual Studio.
-
-In the textbox input on the test runner start typing `@step-1` and select `@playwright@step-1`.
-
-Run that test.
-
-If it passes, make a commit for your work and move on to step 2.
-
-If it doesn't, see if you can find your error, and check with the instructor if you need help.
-
 ## The Counter User Interface
 
 The `Counter` feature will have a new page that provides the user interface for our counter component.
@@ -55,7 +45,7 @@ The `Counter` feature will have a new page that provides the user interface for 
 2. In the template for this component, add the following:
 
 ```html
-<div data-testid="counter-feature-ui">
+<div>
   <button class="btn btn-primary">-</button>
   <span data-testid="current">0</span>
   <button class="btn btn-primary">+</button>
@@ -70,18 +60,17 @@ The `Counter` feature will have a new page that provides the user interface for 
 
 You should be able to click on the `Counter` link in the navigation bar, and then click a link in the counter that shows our rough user interface for the counter component.
 
-In the Test Explorer (VS Code Extension), change the filter to `@playwright:@step-2` and run this test. If it passes, move on the the next step.
 
 ## Counting
 
 In the `ui.component.ts`, the increment button and decrement button should change the value displayed in the span.
 
-All the state should be _inside the component_ - do not use a service or signal store for this part of the lab. We are practicing using signals.
+All the state should be _inside the component_ - do not use a service or signalstore for this part of the lab. We are practicing using signals.
 
 ### Incrementing and Decrementing
 
 1. Use a `signal` in the component to hold the value of the counter.
-2. Display this value in the `<span data-testid="current">` element.
+2. Display this value in the `<span>` element.
 3. When the user clicks the increment button, the value should increase by one.
 4. When the user clicks the decrement button, the value should decrease by one.
 
@@ -93,11 +82,6 @@ Disable the decrement button when clicking it would cause the current value to g
 
 (hint: consider using a `computed` here.)
 
-#### Check Your Work
-
-Run the app and click increment and decrement. Try not to get too fixated on this, it is a bit addictive.
-
-In the test explorer, change the filter to `@playwright:@step-3` and run your tests. If they pass, move on to the next step.
 
 ## FizzBuzz
 
@@ -115,17 +99,9 @@ In the UI component, add an element with a `data-testid="fizzBuzz"`.
 
 Write the code in your component to display in this element the values `Fizz`, `Buzz`, `FizzBuzz` or nothing, based on the rules as the user increments and decrements the counter.
 
-### Check Your Work
-
-Is your component fizzbuzzing properly?
-
-Clear the filter in the test runner and set it to `@playwright:@step-4`.
-
-If the tests pass, move on to the next step.
-
 ## Prefs (Advanced)
 
-This practice is about lifting state. There are no tests to verify this, so free-style it.
+This practice is about lifting state.
 
 In the `src/app/counter/pages` folder add a new component called `prefs.component.ts`.
 
